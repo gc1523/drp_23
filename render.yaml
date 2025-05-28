@@ -1,0 +1,13 @@
+services:
+  - type: web
+    runtime: docker
+    name: scala-webapp
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - backend/**
+        - frontend/**
+        - shared/**
+        - Dockerfile

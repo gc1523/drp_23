@@ -9,19 +9,18 @@ import org.http4s.server.staticcontent._
 
 object Server extends IOApp.Simple {
 
-  // API route: default page returns hello world
+  // API routes
   val apiRoutes = HttpRoutes.of[IO] {
-    case GET -> Root =>
+    case GET -> Root / "hello" =>
       Ok("Hello, World!")
   }
 
   // Static file routes (serves files from backend/public)
-  val staticRoutes = fileService[IO](FileService.Config("public", pathPrefix = ""))
-
-  // Combine routes: default on "/" and static files (like index.html) under "/page/domain"
+  val staticRoutes = fileService[IO](FileService.Config("backend/public", pathPrefix = ""))
+  // Combine routes: API under /api, static files at root
   val httpApp = Router[IO](
-    "/"           -> apiRoutes,
-    "/page/domain" -> staticRoutes
+    "/api" -> apiRoutes,
+    "/"    -> staticRoutes
   ).orNotFound
 
   val port = sys.env.get("PORT").flatMap(p => scala.util.Try(p.toInt).toOption).getOrElse(8080)

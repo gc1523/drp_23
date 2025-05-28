@@ -17,7 +17,7 @@ object Server extends IOApp.Simple {
 
   // val publicFolder = if (sys.env.contains("RENDER")) "/public" else "backend/public"
   // Static file routes (serves files from the determined folder)
-  val staticRoutes = fileService[IO](FileService.Config(/public, pathPrefix = ""))
+  val staticRoutes = fileService[IO](FileService.Config("/public", pathPrefix = ""))
   // Combine routes: API under /api, static files at root
   val httpApp = Router[IO](
     "/api" -> apiRoutes,
